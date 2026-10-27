@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book Details — BookHub</title>
+    <meta name="description" content="View full book details, stock availability, and add to your cart on BookHub." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <div id="header-mount"></div>
+
+    <main>
+      <div class="container">
+        <div class="breadcrumbs" id="breadcrumbs">
+          <a href="index.html">Home</a><span class="sep">/</span><a href="books.html">Browse Books</a><span class="sep">/</span><span id="crumb-title">Book</span>
+        </div>
+        <div id="detail-root"></div>
+      </div>
+    </main>
+
+    <div id="footer-mount"></div>
+    <script type="module" src="/js/book-details.js"></script>
+  </body>
+</html>

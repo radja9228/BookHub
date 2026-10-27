@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BookHub — Discover Your Next Favorite Book</title>
+    <meta name="description" content="BookHub is an online bookstore featuring best sellers, new arrivals, and a wide range of categories. Discover your next favorite book today." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <meta property="og:image" content="https://bolt.new/static/og_default.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://bolt.new/static/og_default.png">
+  </head>
+  <body>
+    <div id="header-mount"></div>
+
+    <main>
+      <!-- Hero -->
+      <section class="hero">
+        <div class="container hero-inner">
+          <div class="hero-text">
+            <h1>Discover Your Next <span class="accent">Favorite Book</span></h1>
+            <p>From best-selling novels to hidden gems, BookHub brings you a curated collection from the archipelago and beyond — delivered to your door.</p>
+            <div class="hero-cta">
+              <a href="books.html" class="btn btn-primary btn-lg">Browse Books</a>
+              <a href="#categories" class="btn btn-outline btn-lg" style="color:#fff;border-color:rgba(255,255,255,0.5)">Explore Categories</a>
+            </div>
+            <div class="hero-stats">
+              <div class="hero-stat"><div class="num">1,200+</div><div class="label">Titles in stock</div></div>
+              <div class="hero-stat"><div class="num">9</div><div class="label">Categories</div></div>
+              <div class="hero-stat"><div class="num">Free</div><div class="label">Shipping over Rp 200k</div></div>
+            </div>
+          </div>
+          <div class="hero-img">
+            <img src="https://images.pexels.com/photos/37447589/pexels-photo-37447589.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="Warm and inviting bookshelf corridor in a cozy bookstore" />
+          </div>
+        </div>
+      </section>
+
+      <!-- Featured books -->
+      <section class="section">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <h2>Featured Books</h2>
+              <div class="sub">Hand-picked reads we think you'll love</div>
+            </div>
+            <a href="books.html">View all &rarr;</a>
+          </div>
+          <div class="book-grid" id="featured-grid"></div>
+        </div>
+      </section>
+
+      <!-- Categories -->
+      <section class="section" id="categories" style="background:var(--white);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <h2>Popular Categories</h2>
+              <div class="sub">Find your next read by genre</div>
+            </div>
+            <a href="books.html">All books &rarr;</a>
+          </div>
+          <div class="category-row" id="category-row"></div>
+        </div>
+      </section>
+
+      <!-- Best sellers -->
+      <section class="section">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <h2>Best Sellers</h2>
+              <div class="sub">What our readers are buying right now</div>
+            </div>
+            <a href="books.html">View all &rarr;</a>
+          </div>
+          <div class="book-grid" id="bestseller-grid"></div>
+        </div>
+      </section>
+
+      <!-- Promo banner -->
+      <section class="section">
+        <div class="container">
+          <div class="promo">
+            <h2>Free shipping on orders over Rp 200,000</h2>
+            <p>Stock up on your favorites — every order above Rp 200,000 ships free, anywhere in Indonesia.</p>
+            <a href="books.html" class="btn btn-primary btn-lg">Start Shopping</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="footer-mount"></div>
+    <script type="module" src="/js/home.js"></script>
+  </body>
+</html>

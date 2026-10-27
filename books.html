@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Browse Books — BookHub</title>
+    <meta name="description" content="Browse the BookHub catalog. Search by title or author, filter by category, and sort by price or title." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <div id="header-mount"></div>
+
+    <main>
+      <div class="page-head">
+        <div class="container">
+          <h1>Browse Books</h1>
+          <p>Explore our full collection. Search by title or author, filter by category, and sort to find exactly what you're looking for.</p>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="breadcrumbs"><a href="index.html">Home</a><span class="sep">/</span>Browse Books</div>
+
+        <div class="catalog-layout">
+          <!-- Filters sidebar -->
+          <aside class="filters" id="filters">
+            <div class="filter-group">
+              <div class="label">Categories</div>
+              <ul class="filter-list" id="category-filters"></ul>
+            </div>
+            <button class="btn btn-ghost btn-sm btn-block" id="clear-filters">Clear all filters</button>
+          </aside>
+
+          <!-- Catalog main -->
+          <div class="catalog-main">
+            <div class="toolbar">
+              <div class="search-box">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                <input type="search" id="search-input" placeholder="Search by title or author…" aria-label="Search books" />
+              </div>
+              <select class="sort-select" id="sort-select" aria-label="Sort books">
+                <option value="default">Sort: Default</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+                <option value="title-asc">Title: A to Z</option>
+                <option value="title-desc">Title: Z to A</option>
+              </select>
+            </div>
+
+            <div class="catalog-results-head">
+              <span class="count" id="result-count"></span>
+            </div>
+
+            <div class="book-grid" id="book-grid"></div>
+
+            <div class="empty-state hidden" id="empty-state">
+              <div class="emoji">&#128218;</div>
+              <h3>No books found</h3>
+              <p>Try a different search term, change the category, or clear your filters.</p>
+              <button class="btn btn-outline btn-sm" id="empty-clear" style="margin-top:14px">Clear filters</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <div id="footer-mount"></div>
+    <script type="module" src="/js/catalog.js"></script>
+  </body>
+</html>
