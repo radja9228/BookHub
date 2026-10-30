@@ -17,14 +17,14 @@ const emptyClear = document.getElementById('empty-clear')
 
 // Read initial category from URL (?category=Fiction)
 const params = new URLSearchParams(window.location.search)
-let activeCategory = params.get('category') || 'All'
+let activeCategory = params.get('category') || 'Semua'
 let searchQuery = ''
 let sortMode = 'default'
 
 function buildFilters() {
   const allCount = BOOKS.length
   const items = [
-    `<li><button class="filter-chip ${activeCategory === 'All' ? 'active' : ''}" data-cat="All">All books <span class="count">${allCount}</span></button></li>`,
+    `<li><button class="filter-chip ${activeCategory === 'Semua' ? 'active' : ''}" data-cat="Semua">Semua buku <span class="count">${allCount}</span></button></li>`,
     ...CATEGORIES.map((c) => {
       const count = BOOKS.filter((b) => b.category === c.name).length
       return `<li><button class="filter-chip ${activeCategory === c.name ? 'active' : ''}" data-cat="${c.name}">${c.name} <span class="count">${count}</span></button></li>`
@@ -43,7 +43,7 @@ function buildFilters() {
 function applyFilters() {
   let list = BOOKS.slice()
 
-  if (activeCategory !== 'All') {
+  if (activeCategory !== 'Semua') {
     list = list.filter((b) => b.category === activeCategory)
   }
 
@@ -66,7 +66,7 @@ function applyFilters() {
 
 function render() {
   const list = applyFilters()
-  resultCount.textContent = `${list.length} book${list.length === 1 ? '' : 's'} found`
+  resultCount.textContent = `${list.length} buku ditemukan`
 
   if (list.length === 0) {
     grid.classList.add('hidden')
@@ -80,7 +80,7 @@ function render() {
 }
 
 function clearAll() {
-  activeCategory = 'All'
+  activeCategory = 'Semua'
   searchQuery = ''
   sortMode = 'default'
   searchInput.value = ''

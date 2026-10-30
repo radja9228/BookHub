@@ -18,7 +18,7 @@ document.querySelectorAll('[data-toggle]').forEach((btn) => {
     if (!input) return
     const isPw = input.type === 'password'
     input.type = isPw ? 'text' : 'password'
-    btn.textContent = isPw ? 'Hide' : 'Show'
+    btn.textContent = isPw ? 'Sembunyikan' : 'Tampilkan'
   })
 })
 
@@ -54,16 +54,16 @@ if (loginForm) {
 
     let valid = true
     const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!email) { showFieldError(loginForm, 'email', 'Please enter your email.'); valid = false }
-    else if (!emailRe.test(email)) { showFieldError(loginForm, 'email', 'Please enter a valid email.'); valid = false }
-    if (!password) { showFieldError(loginForm, 'password', 'Please enter your password.'); valid = false }
+    if (!email) { showFieldError(loginForm, 'email', 'Silakan masukkan email Anda.'); valid = false }
+    else if (!emailRe.test(email)) { showFieldError(loginForm, 'email', 'Silakan masukkan email yang valid.'); valid = false }
+    if (!password) { showFieldError(loginForm, 'password', 'Silakan masukkan kata sandi Anda.'); valid = false }
 
     if (!valid) return
 
     // Prototype login: accept any non-empty credentials and mark as signed in
     const name = email.split('@')[0]
     setCurrentUser({ name: name.charAt(0).toUpperCase() + name.slice(1), email })
-    notify('Logged in successfully (prototype).', 'success')
+    notify('Berhasil masuk (prototipe).', 'success')
     setTimeout(() => (window.location.href = 'index.html'), 600)
   })
 }
@@ -80,22 +80,22 @@ if (registerForm) {
 
     let valid = true
     const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!name) { showFieldError(registerForm, 'name', 'Please enter your full name.'); valid = false }
-    if (!email) { showFieldError(registerForm, 'email', 'Please enter your email.'); valid = false }
-    else if (!emailRe.test(email)) { showFieldError(registerForm, 'email', 'Please enter a valid email.'); valid = false }
-    if (!password) { showFieldError(registerForm, 'password', 'Please enter a password.'); valid = false }
-    else if (password.length < 6) { showFieldError(registerForm, 'password', 'Password must be at least 6 characters.'); valid = false }
-    if (!confirm) { showFieldError(registerForm, 'confirm', 'Please confirm your password.'); valid = false }
-    else if (confirm !== password) { showFieldError(registerForm, 'confirm', 'Passwords do not match.'); valid = false }
+    if (!name) { showFieldError(registerForm, 'name', 'Silakan masukkan nama lengkap Anda.'); valid = false }
+    if (!email) { showFieldError(registerForm, 'email', 'Silakan masukkan email Anda.'); valid = false }
+    else if (!emailRe.test(email)) { showFieldError(registerForm, 'email', 'Silakan masukkan email yang valid.'); valid = false }
+    if (!password) { showFieldError(registerForm, 'password', 'Silakan masukkan kata sandi.'); valid = false }
+    else if (password.length < 6) { showFieldError(registerForm, 'password', 'Kata sandi harus minimal 6 karakter.'); valid = false }
+    if (!confirm) { showFieldError(registerForm, 'confirm', 'Silakan konfirmasi kata sandi Anda.'); valid = false }
+    else if (confirm !== password) { showFieldError(registerForm, 'confirm', 'Kata sandi tidak cocok.'); valid = false }
 
     if (!valid) {
-      showAlert(registerForm, 'Please fix the highlighted fields and try again.')
+      showAlert(registerForm, 'Silakan perbaiki kolom yang ditandai dan coba lagi.')
       return
     }
 
     // Prototype registration: mark as signed in (no real account is created)
     setCurrentUser({ name, email })
-    notify('Account created (prototype). You are now signed in.', 'success')
+    notify('Akun dibuat (prototipe). Anda sekarang masuk.', 'success')
     setTimeout(() => (window.location.href = 'index.html'), 700)
   })
 }

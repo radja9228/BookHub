@@ -15,13 +15,13 @@ const id = params.get('id')
 const book = getBookById(id)
 
 if (!book) {
-  crumbTitle.textContent = 'Not Found'
+  crumbTitle.textContent = 'Tidak Ditemukan'
   root.innerHTML = `
     <div class="empty-state" style="margin:48px 0">
       <div class="emoji">&#128533;</div>
-      <h3>Book not found</h3>
-      <p>We couldn't find the book you're looking for. It may have been removed or the link is incorrect.</p>
-      <a href="books.html" class="btn btn-primary" style="margin-top:16px">Back to Browse Books</a>
+      <h3>Buku tidak ditemukan</h3>
+      <p>Buku yang Anda cari tidak dapat ditemukan. Mungkin sudah dihapus atau tautan tidak benar.</p>
+      <a href="books.html" class="btn btn-primary" style="margin-top:16px">Kembali ke Jelajahi Buku</a>
     </div>`
 } else {
   crumbTitle.textContent = book.title
@@ -31,10 +31,10 @@ if (!book) {
   const lowStock = book.stock > 0 && book.stock <= 5
   const stockClass = outOfStock ? 'out' : lowStock ? 'low' : ''
   const stockText = outOfStock
-    ? 'Out of stock'
+    ? 'Stok habis'
     : lowStock
-      ? `Only ${book.stock} left in stock`
-      : `${book.stock} in stock`
+      ? `Sisa ${book.stock} di stok`
+      : `${book.stock} tersedia`
 
   root.innerHTML = `
     <div class="detail-grid">
@@ -44,39 +44,39 @@ if (!book) {
       <div class="detail-meta">
         <span class="category-tag">${book.category}</span>
         <h1>${book.title}</h1>
-        <p class="author">by ${book.author}</p>
+        <p class="author">oleh ${book.author}</p>
         <div class="price">${formatIDR(book.price)}</div>
         <p class="desc">${book.description}</p>
 
         <dl class="detail-info">
           <dt>ISBN</dt><dd>${book.isbn}</dd>
-          <dt>Publisher</dt><dd>${book.publisher}</dd>
-          <dt>Category</dt><dd>${book.category}</dd>
-          <dt>Author</dt><dd>${book.author}</dd>
+          <dt>Penerbit</dt><dd>${book.publisher}</dd>
+          <dt>Kategori</dt><dd>${book.category}</dd>
+          <dt>Penulis</dt><dd>${book.author}</dd>
         </dl>
 
         <div class="qty-row">
           <div class="qty-control">
-            <button id="qty-minus" type="button" aria-label="Decrease quantity" ${outOfStock ? 'disabled' : ''}>&minus;</button>
+            <button id="qty-minus" type="button" aria-label="Kurangi jumlah" ${outOfStock ? 'disabled' : ''}>&minus;</button>
             <input id="qty-input" type="number" value="1" min="1" max="${book.stock}" ${outOfStock ? 'disabled' : ''} />
-            <button id="qty-plus" type="button" aria-label="Increase quantity" ${outOfStock ? 'disabled' : ''}>+</button>
+            <button id="qty-plus" type="button" aria-label="Tambah jumlah" ${outOfStock ? 'disabled' : ''}>+</button>
           </div>
-          <span class="stock-note ${stockClass}">Availability: <strong>${stockText}</strong></span>
+          <span class="stock-note ${stockClass}">Ketersediaan: <strong>${stockText}</strong></span>
         </div>
 
         <div class="detail-actions">
           <button class="btn btn-primary btn-lg" id="add-to-cart-btn" ${outOfStock ? 'disabled' : ''}>
-            ${outOfStock ? 'Unavailable' : 'Add to Cart'}
+            ${outOfStock ? 'Tidak Tersedia' : 'Keranjang'}
           </button>
-          <a href="books.html" class="btn btn-ghost btn-lg">Continue Browsing</a>
+          <a href="books.html" class="btn btn-ghost btn-lg">Lanjutkan Mencari</a>
         </div>
       </div>
     </div>
 
     <section class="section">
       <div class="section-head">
-        <h2>Related Books</h2>
-        <div class="sub">More from ${book.category}</div>
+        <h2>Buku Terkait</h2>
+        <div class="sub">Lainnya dari ${book.category}</div>
       </div>
       <div class="book-grid" id="related-grid"></div>
     </section>
@@ -118,6 +118,6 @@ if (!book) {
     relatedGrid.innerHTML = related.map(bookCardHTML).join('')
     wireCardActions()
   } else {
-    relatedGrid.innerHTML = `<p class="empty-state">No related books in this category yet.</p>`
+    relatedGrid.innerHTML = `<p class="empty-state">Belum ada buku terkait di kategori ini.</p>`
   }
 }

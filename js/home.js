@@ -19,7 +19,7 @@ categoryRow.innerHTML = CATEGORIES.map((c) => {
     <span class="category-icon">${initials}</span>
     <span>
       <span class="name">${c.name}</span><br />
-      <span class="count">${count} book${count === 1 ? '' : 's'}</span>
+      <span class="count">${count} buku</span>
     </span>
   </a>`
 }).join('')

@@ -43,13 +43,13 @@ export function updateCartCount() {
 
 export function addToCart(bookId, quantity = 1) {
   const book = getBookById(bookId)
-  if (!book) return { ok: false, message: 'Book not found.' }
+  if (!book) return { ok: false, message: 'Buku tidak ditemukan.' }
   const cart = getCart()
   const existing = cart.find((i) => i.bookId === book.id)
   const currentQty = existing ? existing.quantity : 0
   const newQty = currentQty + quantity
   if (newQty > book.stock) {
-    return { ok: false, message: `Only ${book.stock} copies of "${book.title}" are in stock.` }
+    return { ok: false, message: `Hanya tersisa ${book.stock} eksemplar "${book.title}" di stok.` }
   }
   if (existing) {
     existing.quantity = newQty
@@ -57,15 +57,15 @@ export function addToCart(bookId, quantity = 1) {
     cart.push({ bookId: book.id, quantity })
   }
   saveCart(cart)
-  return { ok: true, message: `Added "${book.title}" to your cart.` }
+  return { ok: true, message: `"${book.title}" ditambahkan ke keranjang Anda.` }
 }
 
 export function setCartQuantity(bookId, quantity) {
   const book = getBookById(bookId)
-  if (!book) return { ok: false, message: 'Book not found.' }
-  if (quantity < 1) return { ok: false, message: 'Quantity must be at least 1.' }
+  if (!book) return { ok: false, message: 'Buku tidak ditemukan.' }
+  if (quantity < 1) return { ok: false, message: 'Jumlah harus minimal 1.' }
   if (quantity > book.stock) {
-    return { ok: false, message: `Only ${book.stock} copies in stock.` }
+    return { ok: false, message: `Hanya tersisa ${book.stock} eksemplar di stok.` }
   }
   const cart = getCart()
   const item = cart.find((i) => i.bookId === bookId)
@@ -177,27 +177,27 @@ export function notify(message, type = 'success') {
 export function renderHeader() {
   const user = getCurrentUser()
   const authArea = user
-    ? `<a href="orders.html" class="nav-user">Hi, ${user.name}</a>
-       <button class="btn btn-ghost" data-logout>Log out</button>`
-    : `<a href="login.html" class="btn btn-ghost">Log in</a>
-       <a href="register.html" class="btn btn-outline">Register</a>`
+    ? `<a href="orders.html" class="nav-user">Halo, ${user.name}</a>
+       <button class="btn btn-ghost" data-logout>Keluar</button>`
+    : `<a href="login.html" class="btn btn-ghost">Masuk</a>
+       <a href="register.html" class="btn btn-outline">Daftar</a>`
 
   const html = `
   <header class="site-header" id="site-header">
     <div class="container header-inner">
-      <a href="index.html" class="brand" aria-label="BookHub home">
+      <a href="index.html" class="brand" aria-label="Beranda BookHub">
         <span class="brand-mark">BH</span>
         <span class="brand-name">BookHub</span>
       </a>
-      <button class="nav-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false">
+      <button class="nav-toggle" id="nav-toggle" aria-label="Buka menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
       <nav class="main-nav" id="main-nav">
-        <a href="index.html">Home</a>
-        <a href="books.html">Browse Books</a>
-        <a href="books.html#categories">Categories</a>
-        <a href="orders.html">My Orders</a>
-        <a href="cart.html" class="nav-cart" aria-label="Shopping cart">
+        <a href="index.html">Beranda</a>
+        <a href="books.html">Jelajahi Buku</a>
+        <a href="books.html#categories">Kategori</a>
+        <a href="orders.html">Pesanan Saya</a>
+        <a href="cart.html" class="nav-cart" aria-label="Keranjang belanja">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
           <span class="cart-badge" data-cart-count>0</span>
         </a>
@@ -225,7 +225,7 @@ export function renderHeader() {
   if (logoutBtn) {
     logoutBtn.addEventListener('click', () => {
       logoutUser()
-      notify('You have been logged out.', 'success')
+      notify('Anda telah keluar.', 'success')
       setTimeout(() => (window.location.href = 'index.html'), 600)
     })
   }
@@ -242,18 +242,18 @@ export function renderFooter() {
           <span class="brand-mark">BH</span>
           <span class="brand-name">BookHub</span>
         </div>
-        <p class="footer-tagline">Discover your next favorite book, from the archipelago and beyond.</p>
+        <p class="footer-tagline">Temukan buku favorit berikutnya, dari nusantara dan mancanegara.</p>
       </div>
       <div class="footer-col">
-        <h4>About Us</h4>
+        <h4>Tentang Kami</h4>
         <ul>
-          <li><a href="index.html">Our Story</a></li>
-          <li><a href="books.html">Browse Books</a></li>
-          <li><a href="orders.html">Track an Order</a></li>
+          <li><a href="index.html">Cerita Kami</a></li>
+          <li><a href="books.html">Jelajahi Buku</a></li>
+          <li><a href="orders.html">Lacak Pesanan</a></li>
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Contact</h4>
+        <h4>Kontak</h4>
         <ul>
           <li>Jl. Membaca No. 17, Jakarta</li>
           <li>+62 21 555 0170</li>
@@ -261,17 +261,17 @@ export function renderFooter() {
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Useful Links</h4>
+        <h4>Tautan Berguna</h4>
         <ul>
-          <li><a href="books.html">New Arrivals</a></li>
-          <li><a href="books.html">Best Sellers</a></li>
-          <li><a href="cart.html">Your Cart</a></li>
+          <li><a href="books.html">Baru Tiba</a></li>
+          <li><a href="books.html">Paling Laris</a></li>
+          <li><a href="cart.html">Keranjang Anda</a></li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
       <div class="container">
-        <p>&copy; ${new Date().getFullYear()} BookHub. A prototype storefront.</p>
+        <p>&copy; ${new Date().getFullYear()} BookHub. Etalase prototipe.</p>
       </div>
     </div>
   </footer>`
@@ -291,10 +291,10 @@ export function bookCardHTML(book) {
   const outOfStock = book.stock <= 0
   const lowStock = book.stock > 0 && book.stock <= 5
   const stockBadge = outOfStock
-    ? `<span class="badge badge-out">Out of stock</span>`
+    ? `<span class="badge badge-out">Stok habis</span>`
     : lowStock
-      ? `<span class="badge badge-low">Only ${book.stock} left</span>`
-      : `<span class="badge badge-in">In stock</span>`
+      ? `<span class="badge badge-low">Sisa ${book.stock}</span>`
+      : `<span class="badge badge-in">Tersedia</span>`
 
   return `
   <article class="book-card" data-book-id="${book.id}">
@@ -303,16 +303,16 @@ export function bookCardHTML(book) {
     </a>
     <div class="book-card-body">
       <a href="book-details.html?id=${book.id}" class="book-title">${book.title}</a>
-      <p class="book-author">by ${book.author}</p>
+      <p class="book-author">oleh ${book.author}</p>
       <p class="book-category">${book.category}</p>
       <div class="book-card-foot">
         <span class="book-price">${formatIDR(book.price)}</span>
         ${stockBadge}
       </div>
       <div class="book-card-actions">
-        <a href="book-details.html?id=${book.id}" class="btn btn-ghost btn-sm">Details</a>
+        <a href="book-details.html?id=${book.id}" class="btn btn-ghost btn-sm">Detail</a>
         <button class="btn btn-primary btn-sm" data-add-to-cart="${book.id}" ${outOfStock ? 'disabled' : ''}>
-          ${outOfStock ? 'Unavailable' : 'Add to Cart'}
+          ${outOfStock ? 'Tidak Tersedia' : 'Keranjang'}
         </button>
       </div>
     </div>

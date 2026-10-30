@@ -10,10 +10,10 @@ const orders = getOrders()
 
 const STATUS_FLOW = ['pending', 'processing', 'shipped', 'delivered']
 const STATUS_LABELS = {
-  pending: 'Pending',
-  processing: 'Processing',
-  shipped: 'Shipped',
-  delivered: 'Delivered',
+  pending: 'Menunggu',
+  processing: 'Diproses',
+  shipped: 'Dikirim',
+  delivered: 'Selesai',
 }
 
 // Derive a timeline for an order. Prototype logic: newer orders are earlier
@@ -32,19 +32,19 @@ if (orders.length === 0) {
   root.innerHTML = `
     <div class="empty-state" style="margin:48px 0 80px">
       <div class="emoji">&#128230;</div>
-      <h3>No orders yet</h3>
-      <p>When you place an order, it will appear here so you can track its status.</p>
-      <a href="books.html" class="btn btn-primary" style="margin-top:16px">Browse Books</a>
+      <h3>Belum ada pesanan</h3>
+      <p>Saat Anda membuat pesanan, pesanan akan muncul di sini agar Anda dapat melacak statusnya.</p>
+      <a href="books.html" class="btn btn-primary" style="margin-top:16px">Jelajahi Buku</a>
     </div>
     <div class="prototype-note" style="max-width:640px;margin:0 auto 64px">
       <span>&#128193;</span>
-      <div><strong>Prototype order history</strong>Orders shown here are saved only on this device using localStorage. No real backend database is connected yet, and no other customer's order data is ever shown.</div>
+      <div><strong>Riwayat pesanan prototipe</strong>Pesanan yang ditampilkan di sini hanya disimpan di perangkat ini menggunakan localStorage. Belum ada database backend sungguhan yang terhubung, dan data pesanan pelanggan lain tidak pernah ditampilkan.</div>
     </div>`
 } else {
   root.innerHTML = `
     <div class="prototype-note" style="margin:24px 0">
       <span>&#128193;</span>
-      <div><strong>Prototype order history</strong>These orders are stored only on this device (localStorage) for the prototype. No real backend database is connected yet, and you will only ever see your own orders.</div>
+      <div><strong>Riwayat pesanan prototipe</strong>Pesanan ini hanya disimpan di perangkat ini (localStorage) untuk prototipe. Belum ada database backend sungguhan yang terhubung, dan Anda hanya akan melihat pesanan Anda sendiri.</div>
     </div>
     <div class="order-list" id="order-list"></div>`
 
@@ -54,7 +54,7 @@ if (orders.length === 0) {
 
 function orderCardHTML(order) {
   const date = new Date(order.date)
-  const dateStr = date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
+  const dateStr = date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
   const timeStr = date.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
   const steps = timelineFor(order)
 
@@ -62,8 +62,8 @@ function orderCardHTML(order) {
     <div class="order-card">
       <div class="order-card-head">
         <div>
-          <div class="oid">Order ${order.id}</div>
-          <div class="odate">Placed ${dateStr} at ${timeStr}</div>
+          <div class="oid">Pesanan ${order.id}</div>
+          <div class="odate">Dibuat ${dateStr} pukul ${timeStr}</div>
         </div>
         <span class="status-pill ${order.status}">${STATUS_LABELS[order.status]}</span>
       </div>
@@ -76,7 +76,7 @@ function orderCardHTML(order) {
             </div>`).join('')}
         </div>
         <div class="order-total-row">
-          <span>Total (${order.items.reduce((s, i) => s + i.quantity, 0)} items)</span>
+          <span>Total (${order.items.reduce((s, i) => s + i.quantity, 0)} item)</span>
           <span>${formatIDR(order.total)}</span>
         </div>
 

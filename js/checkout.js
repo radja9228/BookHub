@@ -15,9 +15,9 @@ function render() {
     root.innerHTML = `
       <div class="empty-state" style="margin:48px 0 80px">
         <div class="emoji">&#128722;</div>
-        <h3>Your cart is empty</h3>
-        <p>Add some books to your cart before checking out.</p>
-        <a href="books.html" class="btn btn-primary" style="margin-top:16px">Browse Books</a>
+        <h3>Keranjang Anda kosong</h3>
+        <p>Tambahkan beberapa buku ke keranjang sebelum membayar.</p>
+        <a href="books.html" class="btn btn-primary" style="margin-top:16px">Jelajahi Buku</a>
       </div>`
     return
   }
@@ -31,16 +31,16 @@ function render() {
       <div class="form-card">
         <div class="prototype-note">
           <span>&#9888;&#65039;</span>
-          <div><strong>Prototype checkout</strong>This checkout does not process real payments and does not save to a real database. No payment provider is connected. Use it to preview the order flow.</div>
+          <div><strong>Pembayaran prototipe</strong>Pembayaran ini tidak memproses pembayaran sungguhan dan tidak menyimpan ke database sungguhan. Tidak ada penyedia pembayaran yang terhubung. Gunakan untuk melihat alur pesanan.</div>
         </div>
 
-        ${user ? '' : `<div class="alert alert-info">You are checking out as a guest. <a href="login.html" style="font-weight:600">Log in</a> to save your details for next time.</div>`}
+        ${user ? '' : `<div class="alert alert-info">Anda membayar sebagai tamu. <a href="login.html" style="font-weight:600">Masuk</a> untuk menyimpan data Anda untuk selanjutnya.</div>`}
 
         <form id="checkout-form" novalidate>
-          <h3 style="margin-bottom:18px">Shipping Information</h3>
+          <h3 style="margin-bottom:18px">Informasi Pengiriman</h3>
           <div class="form-grid-2">
             <div class="form-group">
-              <label for="full_name">Full name *</label>
+              <label for="full_name">Nama lengkap *</label>
               <input class="form-control" id="full_name" name="full_name" type="text" value="${user ? user.name : ''}" required />
               <div class="field-error" data-error-for="full_name"></div>
             </div>
@@ -50,70 +50,70 @@ function render() {
               <div class="field-error" data-error-for="email"></div>
             </div>
             <div class="form-group">
-              <label for="phone">Phone number *</label>
+              <label for="phone">Nomor telepon *</label>
               <input class="form-control" id="phone" name="phone" type="tel" required />
               <div class="field-error" data-error-for="phone"></div>
             </div>
             <div class="form-group">
-              <label for="postal_code">Postal code *</label>
+              <label for="postal_code">Kode pos *</label>
               <input class="form-control" id="postal_code" name="postal_code" type="text" required />
               <div class="field-error" data-error-for="postal_code"></div>
             </div>
           </div>
           <div class="form-group">
-            <label for="address1">Street address *</label>
+            <label for="address1">Alamat jalan *</label>
             <input class="form-control" id="address1" name="address1" type="text" required />
             <div class="field-error" data-error-for="address1"></div>
           </div>
           <div class="form-group">
-            <label for="address2">Apartment, suite, etc. (optional)</label>
+            <label for="address2">Apartemen, unit, dll. (opsional)</label>
             <input class="form-control" id="address2" name="address2" type="text" />
           </div>
           <div class="form-grid-2">
             <div class="form-group">
-              <label for="city">City *</label>
+              <label for="city">Kota *</label>
               <input class="form-control" id="city" name="city" type="text" required />
               <div class="field-error" data-error-for="city"></div>
             </div>
             <div class="form-group">
-              <label for="state">Province / State *</label>
+              <label for="state">Provinsi *</label>
               <input class="form-control" id="state" name="state" type="text" required />
               <div class="field-error" data-error-for="state"></div>
             </div>
           </div>
 
-          <h3 style="margin:26px 0 16px">Payment Method</h3>
+          <h3 style="margin:26px 0 16px">Metode Pembayaran</h3>
           <div class="prototype-note" style="margin-bottom:14px">
             <span>&#128179;</span>
-            <div><strong>Test payment only</strong>No real card is charged and no payment provider is connected. This is a simulated checkout for preview purposes.</div>
+            <div><strong>Pembayaran tes saja</strong>Tidak ada kartu sungguhan yang ditagih dan tidak ada penyedia pembayaran yang terhubung. Ini adalah pembayaran simulasi untuk pratinjau.</div>
           </div>
           <div class="payment-options" id="payment-options">
             <label class="payment-option selected">
               <input type="radio" name="payment" value="card_test" checked />
-              <span class="pm-info"><span class="pm-name">Test Card Payment</span><span class="pm-desc">Simulated card — no real charge</span></span>
+              <span class="pm-info"><span class="pm-name">Kartu Tes</span><span class="pm-desc">Kartu simulasi — tanpa tagihan sungguhan</span></span>
             </label>
             <label class="payment-option">
               <input type="radio" name="payment" value="cod" />
-              <span class="pm-info"><span class="pm-name">Cash on Delivery</span><span class="pm-desc">Pay with cash when your order arrives</span></span>
+              <span class="pm-info"><span class="pm-name">Bayar di Tempat</span><span class="pm-desc">Bayar tunai saat pesanan tiba</span></span>
             </label>
             <label class="payment-option">
               <input type="radio" name="payment" value="bank" />
-              <span class="pm-info"><span class="pm-name">Bank Transfer</span><span class="pm-desc">Manual transfer with order confirmation</span></span>
+              <span class="pm-info"><span class="pm-name">Transfer Bank</span><span class="pm-desc">Transfer manual dengan konfirmasi pesanan</span></span>
             </label>
           </div>
           <div class="field-error" data-error-for="payment"></div>
 
           <div class="alert alert-error" id="form-alert" hidden></div>
 
-          <button type="submit" class="btn btn-primary btn-lg btn-block" id="place-order-btn" style="margin-top:24px">Place Order</button>
+          <button type="submit" class="btn btn-primary btn-lg btn-block" id="place-order-btn" style="margin-top:24px">Buat Pesanan</button>
         </form>
       </div>
 
       <aside class="summary-card">
-        <h3>Order Summary</h3>
+        <h3>Ringkasan Pesanan</h3>
         <div class="order-summary-items" id="summary-items"></div>
         <div class="summary-line"><span>Subtotal</span><span>${formatIDR(subtotal)}</span></div>
-        <div class="summary-line"><span>Shipping</span><span>${shipping === 0 ? 'Free' : formatIDR(shipping)}</span></div>
+        <div class="summary-line"><span>Ongkir</span><span>${shipping === 0 ? 'Gratis' : formatIDR(shipping)}</span></div>
         <div class="summary-line total"><span>Total</span><span>${formatIDR(total)}</span></div>
       </aside>
     </div>`
@@ -178,19 +178,19 @@ function handleSubmit(e) {
   let valid = true
   const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
-  if (!data.full_name) { showFieldError('full_name', 'Please enter your full name.'); valid = false }
-  if (!data.email) { showFieldError('email', 'Please enter your email.'); valid = false }
-  else if (!emailRe.test(data.email)) { showFieldError('email', 'Please enter a valid email address.'); valid = false }
-  if (!data.phone) { showFieldError('phone', 'Please enter your phone number.'); valid = false }
-  if (!data.address1) { showFieldError('address1', 'Please enter your street address.'); valid = false }
-  if (!data.city) { showFieldError('city', 'Please enter your city.'); valid = false }
-  if (!data.state) { showFieldError('state', 'Please enter your province or state.'); valid = false }
-  if (!data.postal_code) { showFieldError('postal_code', 'Please enter your postal code.'); valid = false }
-  if (!payment) { showFieldError('payment', 'Please choose a payment method.'); valid = false }
+  if (!data.full_name) { showFieldError('full_name', 'Silakan masukkan nama lengkap Anda.'); valid = false }
+  if (!data.email) { showFieldError('email', 'Silakan masukkan email Anda.'); valid = false }
+  else if (!emailRe.test(data.email)) { showFieldError('email', 'Silakan masukkan alamat email yang valid.'); valid = false }
+  if (!data.phone) { showFieldError('phone', 'Silakan masukkan nomor telepon Anda.'); valid = false }
+  if (!data.address1) { showFieldError('address1', 'Silakan masukkan alamat jalan Anda.'); valid = false }
+  if (!data.city) { showFieldError('city', 'Silakan masukkan kota Anda.'); valid = false }
+  if (!data.state) { showFieldError('state', 'Silakan masukkan provinsi Anda.'); valid = false }
+  if (!data.postal_code) { showFieldError('postal_code', 'Silakan masukkan kode pos Anda.'); valid = false }
+  if (!payment) { showFieldError('payment', 'Silakan pilih metode pembayaran.'); valid = false }
 
   if (!valid) {
     const alert = document.getElementById('form-alert')
-    alert.textContent = 'Please fix the highlighted fields and try again.'
+    alert.textContent = 'Silakan perbaiki kolom yang ditandai dan coba lagi.'
     alert.hidden = false
     return
   }
@@ -200,9 +200,9 @@ function handleSubmit(e) {
   const stockIssue = items.find((i) => i.quantity > i.book.stock)
   if (stockIssue) {
     const alert = document.getElementById('form-alert')
-    alert.textContent = `"${stockIssue.book.title}" only has ${stockIssue.book.stock} in stock. Please adjust your cart.`
+    alert.textContent = `"${stockIssue.book.title}" hanya tersisa ${stockIssue.book.stock} di stok. Silakan sesuaikan keranjang Anda.`
     alert.hidden = false
-    notify('Stock issue detected. Please review your cart.', 'error')
+    notify('Masalah stok terdeteksi. Silakan periksa keranjang Anda.', 'error')
     return
   }
 
@@ -232,7 +232,7 @@ function handleSubmit(e) {
   setLastOrder(order)
   clearCart()
 
-  notify('Order placed successfully!', 'success')
+  notify('Pesanan berhasil dibuat!', 'success')
   setTimeout(() => {
     window.location.href = `checkout.html?confirmed=1`
   }, 500)
@@ -254,23 +254,23 @@ function renderConfirmation() {
       root.innerHTML = `
         <div class="empty-state" style="margin:48px 0 80px">
           <div class="emoji">&#128269;</div>
-          <h3>No recent order found</h3>
-          <p>We couldn't find a recent order to confirm. Browse the catalog to place one.</p>
-          <a href="books.html" class="btn btn-primary" style="margin-top:16px">Browse Books</a>
+          <h3>Pesanan tidak ditemukan</h3>
+          <p>Kami tidak menemukan pesanan terbaru untuk dikonfirmasi. Jelajahi katalog untuk membuat pesanan.</p>
+          <a href="books.html" class="btn btn-primary" style="margin-top:16px">Jelajahi Buku</a>
         </div>`
       return
     }
-    document.title = 'Order Confirmed — BookHub'
+    document.title = 'Pesanan Dikonfirmasi — BookHub'
     root.innerHTML = `
       <div class="confirm-hero">
         <div class="confirm-icon">
           <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
         </div>
-        <h1>Thank you for your order!</h1>
-        <p>Your prototype order <strong>${order.id}</strong> has been placed. Since this is a prototype, no real payment has been processed and no order has been saved to a real database.</p>
+        <h1>Terima kasih atas pesanan Anda!</h1>
+        <p>Pesanan prototipe <strong>${order.id}</strong> telah dibuat. Karena ini adalah prototipe, tidak ada pembayaran sungguhan yang diproses dan tidak ada pesanan yang disimpan ke database sungguhan.</p>
       </div>
       <div class="confirm-card form-card">
-        <h3>Order Details</h3>
+        <h3>Detail Pesanan</h3>
         <div class="order-items-mini">
           ${order.items.map((i) => `
             <div class="order-item-mini">
@@ -279,13 +279,13 @@ function renderConfirmation() {
             </div>`).join('')}
         </div>
         <div class="summary-line"><span>Subtotal</span><span>${formatIDR(order.subtotal)}</span></div>
-        <div class="summary-line"><span>Shipping</span><span>${order.shipping === 0 ? 'Free' : formatIDR(order.shipping)}</span></div>
+        <div class="summary-line"><span>Ongkir</span><span>${order.shipping === 0 ? 'Gratis' : formatIDR(order.shipping)}</span></div>
         <div class="summary-line total"><span>Total</span><span>${formatIDR(order.total)}</span></div>
-        <div class="summary-line" style="margin-top:14px"><span>Payment</span><span>${paymentLabel(order.payment_method)}</span></div>
-        <div class="summary-line"><span>Ship to</span><span>${order.shipping_info.full_name}, ${order.shipping_info.city}</span></div>
+        <div class="summary-line" style="margin-top:14px"><span>Pembayaran</span><span>${paymentLabel(order.payment_method)}</span></div>
+        <div class="summary-line"><span>Dikirim ke</span><span>${order.shipping_info.full_name}, ${order.shipping_info.city}</span></div>
         <div style="display:flex;gap:12px;margin-top:22px;flex-wrap:wrap">
-          <a href="orders.html" class="btn btn-primary">View My Orders</a>
-          <a href="books.html" class="btn btn-ghost">Continue Shopping</a>
+          <a href="orders.html" class="btn btn-primary">Lihat Pesanan Saya</a>
+          <a href="books.html" class="btn btn-ghost">Lanjutkan Belanja</a>
         </div>
       </div>`
     clearLastOrder()
@@ -294,9 +294,9 @@ function renderConfirmation() {
 
 function paymentLabel(method) {
   switch (method) {
-    case 'card_test': return 'Test Card Payment'
-    case 'cod': return 'Cash on Delivery'
-    case 'bank': return 'Bank Transfer'
+    case 'card_test': return 'Kartu Tes'
+    case 'cod': return 'Bayar di Tempat'
+    case 'bank': return 'Transfer Bank'
     default: return method
   }
 }
