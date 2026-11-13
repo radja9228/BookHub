@@ -7,6 +7,9 @@ const ORDERS_KEY = 'bookhub_orders'
 const USER_KEY = 'bookhub_user'
 const SUCCESS_ORDER_KEY = 'bookhub_last_order'
 
+export const ADMIN_CREDENTIALS = { email: 'admin@bookhub.com', password: 'admin123' }
+export const CUSTOMER_CREDENTIALS = { email: 'customer@gmail.com', password: 'user123' }
+
 /* ---------- Currency ---------- */
 export function formatIDR(amount) {
   const n = Number(amount) || 0
@@ -134,11 +137,17 @@ export function clearLastOrder() {
   localStorage.removeItem(SUCCESS_ORDER_KEY)
 }
 
-/* ---------- Prototype auth (localStorage flag only) ---------- */
+/* ---------- Dummy authentication session ---------- */
 export function getCurrentUser() {
   try {
     const raw = localStorage.getItem(USER_KEY)
-    return raw ? JSON.parse(raw) : null
+    if (!raw) return null
+    const user = JSON.parse(raw)
+    if (!user || !user.email) return null
+    return {
+      ...user,
+      role: user.role || (user.email.toLowerCase() === ADMIN_CREDENTIALS.email ? 'admin' : 'customer'),
+    }
   } catch {
     return null
   }
@@ -147,6 +156,14 @@ export function getCurrentUser() {
 export function setCurrentUser(user) {
   localStorage.setItem(USER_KEY, JSON.stringify(user))
   document.dispatchEvent(new CustomEvent('auth:changed'))
+}
+
+export function isAdminUser(user = getCurrentUser()) {
+  return user?.role === 'admin'
+}
+
+export function isCustomerUser(user = getCurrentUser()) {
+  return user?.role === 'customer'
 }
 
 export function logoutUser() {
@@ -176,6 +193,10 @@ export function notify(message, type = 'success') {
 /* ---------- Header + Footer injection ---------- */
 export function renderHeader() {
   const user = getCurrentUser()
+  if (user?.role === 'admin' && !window.location.pathname.endsWith('/admin.html')) {
+    window.location.replace('admin.html')
+    return
+  }
   const authArea = user
     ? `<a href="orders.html" class="nav-user">Halo, ${user.name}</a>
        <button class="btn btn-ghost" data-logout>Keluar</button>`

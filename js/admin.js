@@ -1,4 +1,5 @@
 import { BOOKS, CATEGORIES } from './books-data.js'
+import { getCurrentUser, logoutUser } from './common.js'
 
 const icons = {
   dashboard: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>',
@@ -59,7 +60,8 @@ function shell() {
         ${navItems.map(([route, label, icon]) => `<button class="admin-nav-link" data-route="${route}"><span class="admin-nav-icon">${icons[icon]}</span><span>${label}</span></button>`).join('')}
       </nav>
       <div class="admin-sidebar-foot">
-        <div class="admin-profile"><span class="admin-avatar">AR</span><div><strong>Admin BookHub</strong><span>admin@bookhub.id</span></div></div>
+        <div class="admin-profile"><span class="admin-avatar">AR</span><div><strong>Admin BookHub</strong><span>admin@bookhub.com</span></div></div>
+        <button class="admin-nav-link" id="admin-logout" style="margin-top:8px"><span class="admin-nav-icon">${icons.menu}</span><span>Keluar</span></button>
       </div>
     </aside>
     <div class="admin-overlay" id="admin-overlay"></div>
@@ -186,7 +188,16 @@ function init() {
   document.getElementById('admin-menu-toggle').addEventListener('click', () => { document.getElementById('admin-sidebar').classList.add('open'); document.getElementById('admin-overlay').classList.add('open') })
   document.getElementById('admin-overlay').addEventListener('click', () => { document.getElementById('admin-sidebar').classList.remove('open'); document.getElementById('admin-overlay').classList.remove('open') })
   document.getElementById('admin-notification').addEventListener('click', () => showToast('Belum ada notifikasi baru.'))
+  document.getElementById('admin-logout').addEventListener('click', () => {
+    logoutUser()
+    window.location.replace('login.html')
+  })
   navigate(window.location.hash.slice(1) || 'dashboard')
 }
 
-init()
+const currentUser = getCurrentUser()
+if (currentUser?.role === 'admin') {
+  init()
+} else {
+  window.location.replace('login.html?role=admin')
+}

@@ -1,13 +1,14 @@
 import {
   renderHeader, renderFooter, notify, getCurrentUser, setCurrentUser,
+  ADMIN_CREDENTIALS, CUSTOMER_CREDENTIALS,
 } from './common.js'
 
 renderHeader()
 renderFooter()
 
-// If already logged in, send to home
-if (getCurrentUser()) {
-  window.location.href = 'index.html'
+const existingUser = getCurrentUser()
+if (existingUser) {
+  window.location.replace(existingUser.role === 'admin' ? 'admin.html' : 'index.html')
 }
 
 // Password show/hide toggles
@@ -60,11 +61,21 @@ if (loginForm) {
 
     if (!valid) return
 
-    // Prototype login: accept any non-empty credentials and mark as signed in
-    const name = email.split('@')[0]
-    setCurrentUser({ name: name.charAt(0).toUpperCase() + name.slice(1), email })
-    notify('Berhasil masuk (prototipe).', 'success')
-    setTimeout(() => (window.location.href = 'index.html'), 600)
+    const normalizedEmail = email.toLowerCase()
+    const isAdmin = normalizedEmail === ADMIN_CREDENTIALS.email && password === ADMIN_CREDENTIALS.password
+    const isCustomer = normalizedEmail === CUSTOMER_CREDENTIALS.email && password === CUSTOMER_CREDENTIALS.password
+
+    if (!isAdmin && !isCustomer) {
+      showAlert(loginForm, 'Email atau kata sandi tidak sesuai. Gunakan akun demo yang tersedia.')
+      return
+    }
+
+    const user = isAdmin
+      ? { name: 'Admin BookHub', email: ADMIN_CREDENTIALS.email, role: 'admin' }
+      : { name: 'Customer BookHub', email: CUSTOMER_CREDENTIALS.email, role: 'customer' }
+    setCurrentUser(user)
+    notify('Berhasil masuk sebagai ' + (isAdmin ? 'Admin.' : 'Customer.'), 'success')
+    setTimeout(() => (window.location.href = isAdmin ? 'admin.html' : 'index.html'), 600)
   })
 }
 
@@ -93,9 +104,8 @@ if (registerForm) {
       return
     }
 
-    // Prototype registration: mark as signed in (no real account is created)
-    setCurrentUser({ name, email })
-    notify('Akun dibuat (prototipe). Anda sekarang masuk.', 'success')
+    setCurrentUser({ name, email, role: 'customer' })
+    notify('Akun Customer dibuat (prototipe). Anda sekarang masuk.', 'success')
     setTimeout(() => (window.location.href = 'index.html'), 700)
   })
 }
