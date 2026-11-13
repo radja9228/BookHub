@@ -221,7 +221,7 @@ function init() {
   })
   const signOut = () => {
     logoutUser()
-    window.location.replace('login.html?role=admin')
+    window.location.replace('admin-login.html')
   }
   document.getElementById('admin-top-logout').addEventListener('click', signOut)
   document.getElementById('admin-logout').addEventListener('click', signOut)
@@ -232,5 +232,5 @@ const currentUser = getCurrentUser()
 if (currentUser?.role === 'admin') {
   init()
 } else {
-  window.location.replace('login.html?role=admin')
+  window.location.replace('admin-login.html')
 }

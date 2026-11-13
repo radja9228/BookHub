@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Login — BookHub</title>
+    <meta name="description" content="Masuk ke Dashboard Admin BookHub." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <main>
+      <div class="center-page">
+        <div class="form-card narrow admin-login-card">
+          <div class="admin-login-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" />
+              <rect x="3" y="14" width="7" height="7" rx="1" /><rect x="14" y="14" width="7" height="7" rx="1" />
+            </svg>
+            <span>Admin Portal</span>
+          </div>
+          <h1 style="text-align:center">Admin Login</h1>
+          <p style="text-align:center;color:var(--ink-500);margin-bottom:22px">Masuk ke Dashboard Admin BookHub</p>
+
+          <div class="prototype-note">
+            <span>&#128274;</span>
+            <div><strong>Masuk demo</strong>Tombol Masuk akan langsung membawa Anda ke Dashboard Admin tanpa validasi untuk demonstrasi.</div>
+          </div>
+
+          <form id="admin-login-form" novalidate>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input class="form-control" id="email" name="email" type="email" placeholder="admin@bookhub.com" />
+            </div>
+            <div class="form-group">
+              <label for="password">Kata sandi</label>
+              <div class="password-field">
+                <input class="form-control" id="password" name="password" type="password" placeholder="Kata sandi Anda" />
+                <button type="button" class="toggle-pw" data-toggle="password">Tampilkan</button>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block btn-lg">Masuk</button>
+          </form>
+          <a href="login-select.html" class="back-to-select">&larr; Kembali ke pilihan login</a>
+        </div>
+      </div>
+    </main>
+    <script type="module" src="/js/admin-auth.js"></script>
+  </body>
+</html>

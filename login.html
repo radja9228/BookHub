@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Masuk — BookHub</title>
+    <title>Customer Login — BookHub</title>
     <meta name="description" content="Masuk ke akun BookHub Anda untuk membayar lebih cepat dan melacak pesanan Anda." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -16,13 +16,19 @@
 
     <main>
       <div class="center-page">
-        <div class="form-card narrow">
+        <div class="form-card narrow customer-login-card">
+          <div class="customer-login-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z" />
+            </svg>
+            <span>Customer</span>
+          </div>
           <h1 style="text-align:center">Selamat datang kembali</h1>
           <p style="text-align:center;color:var(--ink-500);margin-bottom:22px">Masuk ke akun BookHub Anda</p>
 
           <div class="prototype-note">
             <span>&#128274;</span>
-            <div><strong>Masuk prototipe</strong>Belum ada autentikasi backend sungguhan yang terhubung. Gunakan admin@bookhub.com / admin123 untuk Admin atau customer@gmail.com / user123 untuk Customer.</div>
+            <div><strong>Masuk demo</strong>Tombol Masuk akan langsung membawa Anda ke beranda Customer tanpa validasi untuk demonstrasi.</div>
           </div>
 
           <div class="alert alert-error" id="form-alert" hidden></div>
@@ -43,6 +49,7 @@
             </div>
             <button type="submit" class="btn btn-primary btn-block btn-lg">Masuk</button>
           </form>
+          <a href="login-select.html" class="back-to-select">&larr; Kembali ke pilihan login</a>
           <p class="form-foot">Belum punya akun? <a href="register.html">Buat akun</a></p>
         </div>
       </div>

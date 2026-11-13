@@ -1,6 +1,6 @@
 import {
   renderHeader, renderFooter, notify, getCurrentUser, setCurrentUser,
-  ADMIN_CREDENTIALS, CUSTOMER_CREDENTIALS,
+  CUSTOMER_CREDENTIALS,
 } from './common.js'
 
 renderHeader()
@@ -45,7 +45,7 @@ function showAlert(form, message) {
   if (alert) { alert.textContent = message; alert.hidden = false }
 }
 
-/* ---------- Login ---------- */
+/* ---------- Customer Login (no validation — demo) ---------- */
 if (loginForm) {
   loginForm.addEventListener('submit', (e) => {
     e.preventDefault()
@@ -61,21 +61,10 @@ if (loginForm) {
 
     if (!valid) return
 
-    const normalizedEmail = email.toLowerCase()
-    const isAdmin = normalizedEmail === ADMIN_CREDENTIALS.email && password === ADMIN_CREDENTIALS.password
-    const isCustomer = normalizedEmail === CUSTOMER_CREDENTIALS.email && password === CUSTOMER_CREDENTIALS.password
-
-    if (!isAdmin && !isCustomer) {
-      showAlert(loginForm, 'Email atau kata sandi tidak sesuai. Gunakan akun demo yang tersedia.')
-      return
-    }
-
-    const user = isAdmin
-      ? { name: 'Admin BookHub', email: ADMIN_CREDENTIALS.email, role: 'admin' }
-      : { name: 'Customer BookHub', email: CUSTOMER_CREDENTIALS.email, role: 'customer' }
-    setCurrentUser(user)
-    notify('Berhasil masuk sebagai ' + (isAdmin ? 'Admin.' : 'Customer.'), 'success')
-    setTimeout(() => (window.location.href = isAdmin ? 'admin.html' : 'index.html'), 600)
+    const name = email.split('@')[0]
+    setCurrentUser({ name: name.charAt(0).toUpperCase() + name.slice(1), email, role: 'customer' })
+    notify('Berhasil masuk sebagai Customer.', 'success')
+    setTimeout(() => (window.location.href = 'index.html'), 600)
   })
 }
 
@@ -105,7 +94,7 @@ if (registerForm) {
     }
 
     setCurrentUser({ name, email, role: 'customer' })
-    notify('Akun Customer dibuat (prototipe). Anda sekarang masuk.', 'success')
+    notify('Akun Customer dibuat. Anda sekarang masuk.', 'success')
     setTimeout(() => (window.location.href = 'index.html'), 700)
   })
 }

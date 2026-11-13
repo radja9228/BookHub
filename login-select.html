@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pilih Login — BookHub</title>
+    <meta name="description" content="Pilih jalur masuk Anda: Admin atau Customer BookHub." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <main>
+      <div class="center-page">
+        <div class="select-card">
+          <div class="select-brand">
+            <span class="brand-mark">BH</span>
+            <span class="brand-name">BookHub</span>
+          </div>
+          <h1 class="select-title">Selamat datang di BookHub</h1>
+          <p class="select-subtitle">Silakan pilih jalur masuk Anda untuk melanjutkan</p>
+
+          <div class="select-grid">
+            <a href="admin-login.html" class="select-option admin-option">
+              <div class="select-icon admin-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="3" width="7" height="7" rx="1" />
+                  <rect x="14" y="3" width="7" height="7" rx="1" />
+                  <rect x="3" y="14" width="7" height="7" rx="1" />
+                  <rect x="14" y="14" width="7" height="7" rx="1" />
+                </svg>
+              </div>
+              <div class="select-option-body">
+                <strong>Login sebagai Admin</strong>
+                <span>Kelola toko, buku, pesanan, dan laporan</span>
+              </div>
+              <span class="select-arrow">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+              </span>
+            </a>
+
+            <a href="login.html" class="select-option customer-option">
+              <div class="select-icon customer-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                  <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z" />
+                </svg>
+              </div>
+              <div class="select-option-body">
+                <strong>Login sebagai Customer</strong>
+                <span>Jelajahi katalog dan beli buku favorit Anda</span>
+              </div>
+              <span class="select-arrow">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+              </span>
+            </a>
+          </div>
+
+          <p class="select-foot">Belum punya akun Customer? <a href="register.html">Daftar di sini</a></p>
+        </div>
+      </div>
+    </main>
+    <script type="module" src="/js/login-select.js"></script>
+  </body>
+</html>

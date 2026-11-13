@@ -1052,3 +1052,98 @@ textarea.form-control { min-height: 90px; resize: vertical; }
   .hero-inner { padding: 40px 16px; }
   .form-card { padding: 24px; }
 }
+
+/* ---------- Login Selection Page ---------- */
+.select-card {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 48px 44px;
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+}
+.select-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+  font-weight: 800;
+  font-size: 1.3rem;
+  color: var(--navy-900);
+}
+.select-brand .brand-mark { width: 40px; height: 40px; font-size: 1rem; }
+.select-title { font-size: 1.7rem; margin-bottom: 8px; }
+.select-subtitle { color: var(--ink-500); font-size: 0.98rem; margin-bottom: 36px; }
+.select-grid { display: flex; flex-direction: column; gap: 16px; margin-bottom: 28px; }
+.select-option {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 22px 24px;
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--white);
+  color: var(--ink-900);
+  text-decoration: none;
+  transition: border-color 0.22s, box-shadow 0.22s, transform 0.15s;
+}
+.select-option:hover {
+  border-color: var(--orange-400);
+  box-shadow: var(--shadow);
+  transform: translateY(-2px);
+  color: var(--ink-900);
+}
+.select-icon {
+  flex: 0 0 52px;
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border-radius: 13px;
+}
+.select-icon svg { width: 26px; height: 26px; }
+.admin-icon { background: var(--navy-100); color: var(--navy-700); }
+.customer-icon { background: var(--orange-50); color: var(--orange-600); }
+.select-option-body { flex: 1; text-align: left; }
+.select-option-body strong { display: block; font-size: 1.05rem; color: var(--navy-900); }
+.select-option-body span { display: block; margin-top: 3px; font-size: 0.88rem; color: var(--ink-500); }
+.select-arrow { color: var(--ink-300); transition: color 0.2s, transform 0.2s; }
+.select-arrow svg { width: 20px; height: 20px; }
+.select-option:hover .select-arrow { color: var(--orange-600); transform: translateX(4px); }
+.select-foot { font-size: 0.9rem; color: var(--ink-500); margin: 0; }
+.select-foot a { font-weight: 600; color: var(--orange-600); }
+
+/* ---------- Login badges & back button ---------- */
+.admin-login-badge,
+.customer-login-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 16px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+.admin-login-badge { background: var(--navy-100); color: var(--navy-700); }
+.admin-login-badge svg { width: 17px; height: 17px; }
+.customer-login-badge { background: var(--orange-50); color: var(--orange-600); }
+.customer-login-badge svg { width: 17px; height: 17px; }
+.back-to-select {
+  display: block;
+  text-align: center;
+  margin-top: 18px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--navy-500);
+}
+.back-to-select:hover { color: var(--orange-600); }
+
+@media (max-width: 520px) {
+  .select-card { padding: 32px 22px; }
+  .select-title { font-size: 1.4rem; }
+  .select-option { padding: 18px 18px; }
+  .select-icon { flex: 0 0 44px; width: 44px; height: 44px; }
+  .select-icon svg { width: 22px; height: 22px; }
+}

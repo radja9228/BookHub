@@ -200,7 +200,7 @@ export function renderHeader() {
   const authArea = user
     ? `<a href="orders.html" class="nav-user">Halo, ${user.name}</a>
        <button class="btn btn-ghost" data-logout>Keluar</button>`
-    : `<a href="login.html" class="btn btn-ghost">Masuk</a>
+    : `<a href="login-select.html" class="btn btn-ghost">Masuk</a>
        <a href="register.html" class="btn btn-outline">Daftar</a>`
 
   const html = `
@@ -247,7 +247,7 @@ export function renderHeader() {
     logoutBtn.addEventListener('click', () => {
       logoutUser()
       notify('Anda telah keluar.', 'success')
-      setTimeout(() => (window.location.href = 'index.html'), 600)
+      setTimeout(() => (window.location.href = 'login.html'), 600)
     })
   }
 
