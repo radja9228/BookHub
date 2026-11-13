@@ -14,6 +14,9 @@ const icons = {
   edit: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L8 18l-4 1 1-4Z"/></svg>',
   trash: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18M8 6V4h8v2M19 6l-1 15H6L5 6M10 11v6M14 11v6"/></svg>',
   bell: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg>',
+  user: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>',
+  chevron: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>',
+  logout: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>',
   menu: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>',
 }
 
@@ -68,7 +71,22 @@ function shell() {
     <section class="admin-main">
       <header class="admin-topbar">
         <div class="admin-topbar-left"><button class="admin-menu-toggle" id="admin-menu-toggle" aria-label="Buka menu">${icons.menu}</button><div class="admin-topbar-title"><h1 id="admin-top-title">Dashboard</h1><p>Kelola toko buku Anda dengan mudah</p></div></div>
-        <div class="admin-topbar-actions"><a class="admin-view-store" href="/" target="_blank">Lihat Toko</a><button class="admin-icon-btn" id="admin-notification" aria-label="Notifikasi">${icons.bell}</button></div>
+        <div class="admin-topbar-actions">
+          <a class="admin-view-store" href="/" target="_blank">Lihat Toko</a>
+          <button class="admin-icon-btn" id="admin-notification" aria-label="Notifikasi">${icons.bell}</button>
+          <div class="admin-user-menu">
+            <button class="admin-user-trigger" id="admin-profile-trigger" aria-expanded="false" aria-controls="admin-profile-dropdown">
+              <span class="admin-top-avatar">AR</span>
+              <span class="admin-user-copy"><strong>Admin BookHub</strong><small>Administrator</small></span>
+              <span class="admin-chevron">${icons.chevron}</span>
+            </button>
+            <div class="admin-profile-dropdown" id="admin-profile-dropdown" hidden>
+              <div class="admin-profile-dropdown-head"><span class="admin-top-avatar large">AR</span><div><strong>Admin BookHub</strong><span>admin@bookhub.com</span></div></div>
+              <div class="admin-profile-status"><span></span>Status akun aktif</div>
+              <button class="admin-profile-logout" id="admin-top-logout">${icons.logout}<span>Logout</span></button>
+            </div>
+          </div>
+        </div>
       </header>
       <main class="admin-content" id="admin-content"></main>
     </section>
@@ -188,10 +206,25 @@ function init() {
   document.getElementById('admin-menu-toggle').addEventListener('click', () => { document.getElementById('admin-sidebar').classList.add('open'); document.getElementById('admin-overlay').classList.add('open') })
   document.getElementById('admin-overlay').addEventListener('click', () => { document.getElementById('admin-sidebar').classList.remove('open'); document.getElementById('admin-overlay').classList.remove('open') })
   document.getElementById('admin-notification').addEventListener('click', () => showToast('Belum ada notifikasi baru.'))
-  document.getElementById('admin-logout').addEventListener('click', () => {
-    logoutUser()
-    window.location.replace('login.html')
+  const profileTrigger = document.getElementById('admin-profile-trigger')
+  const profileDropdown = document.getElementById('admin-profile-dropdown')
+  profileTrigger.addEventListener('click', () => {
+    const isOpen = profileDropdown.hidden
+    profileDropdown.hidden = !isOpen
+    profileTrigger.setAttribute('aria-expanded', String(isOpen))
   })
+  document.addEventListener('click', (event) => {
+    if (!event.target.closest('.admin-user-menu')) {
+      profileDropdown.hidden = true
+      profileTrigger.setAttribute('aria-expanded', 'false')
+    }
+  })
+  const signOut = () => {
+    logoutUser()
+    window.location.replace('login.html?role=admin')
+  }
+  document.getElementById('admin-top-logout').addEventListener('click', signOut)
+  document.getElementById('admin-logout').addEventListener('click', signOut)
   navigate(window.location.hash.slice(1) || 'dashboard')
 }
 
