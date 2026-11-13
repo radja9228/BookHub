@@ -120,7 +120,7 @@ function shell() {
       <header class="admin-topbar">
         <div class="admin-topbar-left"><button class="admin-menu-toggle" id="admin-menu-toggle" aria-label="Buka menu">${icons.menu}</button><div class="admin-topbar-title"><h1 id="admin-top-title">Dashboard</h1><p>Kelola toko buku Anda dengan mudah</p></div></div>
         <div class="admin-topbar-actions">
-          <a class="admin-view-store" href="/" target="_blank">Lihat Toko</a>
+          <a class="admin-view-store" href="index.html" target="_blank" rel="noopener noreferrer">Lihat Toko</a>
           <button class="admin-icon-btn" id="admin-notification" aria-label="Notifikasi">${icons.bell}</button>
           <div class="admin-user-menu">
             <button class="admin-user-trigger" id="admin-profile-trigger" aria-expanded="false" aria-controls="admin-profile-dropdown">
@@ -283,6 +283,10 @@ function init() {
   document.getElementById('admin-menu-toggle').addEventListener('click', () => { document.getElementById('admin-sidebar').classList.add('open'); document.getElementById('admin-overlay').classList.add('open') })
   document.getElementById('admin-overlay').addEventListener('click', () => { document.getElementById('admin-sidebar').classList.remove('open'); document.getElementById('admin-overlay').classList.remove('open') })
   document.getElementById('admin-notification').addEventListener('click', () => showToast('Belum ada notifikasi baru.'))
+  document.querySelector('.admin-view-store').addEventListener('click', (e) => {
+    e.preventDefault()
+    window.open('index.html', '_blank', 'noopener,noreferrer')
+  })
   const profileTrigger = document.getElementById('admin-profile-trigger')
   const profileDropdown = document.getElementById('admin-profile-dropdown')
   profileTrigger.addEventListener('click', () => {
