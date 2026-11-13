@@ -41,6 +41,54 @@ const rupiah = (value) => 'Rp ' + Number(value).toLocaleString('id-ID')
 const initials = (name) => name.split(' ').map((part) => part[0]).slice(0, 2).join('').toUpperCase()
 const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[char]))
 
+const PAGE_SIZE = 5
+const pageState = {}
+
+function paginationHTML(route, totalRows) {
+  const totalPages = Math.max(1, Math.ceil(totalRows / PAGE_SIZE))
+  const currentPage = Math.min(pageState[route] || 1, totalPages)
+  let buttons = `<button class="admin-page-btn" data-page-action="prev"${currentPage === 1 ? ' disabled' : ''} aria-label="Halaman sebelumnya">‹</button>`
+  for (let p = 1; p <= totalPages; p++) {
+    buttons += `<button class="admin-page-btn${p === currentPage ? ' active' : ''}" data-page="${p}">${p}</button>`
+  }
+  buttons += `<button class="admin-page-btn" data-page-action="next"${currentPage === totalPages ? ' disabled' : ''} aria-label="Halaman berikutnya">›</button>`
+  return `<div class="admin-pagination">${buttons}</div>`
+}
+
+function applyPagination(content, route, totalRows) {
+  const totalPages = Math.max(1, Math.ceil(totalRows / PAGE_SIZE))
+  const currentPage = Math.min(pageState[route] || 1, totalPages)
+  pageState[route] = currentPage
+  const start = (currentPage - 1) * PAGE_SIZE
+  const end = start + PAGE_SIZE
+  let visibleCount = 0
+  content.querySelectorAll('tbody tr[data-row-idx]').forEach((row) => {
+    const idx = parseInt(row.dataset.rowIdx, 10)
+    const searchMatch = row.dataset.searchMatch !== 'false'
+    if (searchMatch && idx >= start && idx < end) {
+      row.style.display = ''
+      visibleCount++
+    } else {
+      row.style.display = 'none'
+    }
+  })
+  const infoEl = content.querySelector('[data-page-info]')
+  if (infoEl) {
+    infoEl.textContent = visibleCount === 0
+      ? 'Tidak ada data pada halaman ini'
+      : `Menampilkan ${start + 1}–${start + visibleCount} dari ${totalRows}`
+  }
+  content.querySelectorAll('.admin-page-btn[data-page]').forEach((btn) => {
+    btn.classList.toggle('active', parseInt(btn.dataset.page, 10) === currentPage)
+  })
+  content.querySelectorAll('.admin-page-btn[data-page-action="prev"]').forEach((btn) => {
+    btn.disabled = currentPage === 1
+  })
+  content.querySelectorAll('.admin-page-btn[data-page-action="next"]').forEach((btn) => {
+    btn.disabled = currentPage === totalPages
+  })
+}
+
 const navItems = [
   ['dashboard', 'Dashboard', 'dashboard'],
   ['books', 'Manajemen Buku', 'books'],
@@ -126,29 +174,29 @@ function dashboardView() {
 
 function booksView() {
   return `${pageHeading('Manajemen Buku', 'Kelola katalog, harga, dan ketersediaan buku', `<button class="admin-btn admin-btn-primary" data-demo="add-book">${icons.plus} Tambah Buku</button>`)}
-    <section class="admin-card admin-table-card"><div class="admin-table-toolbar">${searchBox('Cari judul atau penulis...')}<select class="admin-select" style="max-width:160px" data-category-filter><option>Semua Kategori</option>${CATEGORIES.map((category) => `<option>${category.name}</option>`).join('')}</select></div><div class="admin-table-wrap"><table class="admin-table" data-filter-table><thead><tr><th>Buku</th><th>Penulis</th><th>Kategori</th><th>Harga</th><th>Stok</th><th>Aksi</th></tr></thead><tbody>${BOOKS.map((book) => `<tr data-search-row="${esc(`${book.title} ${book.author} ${book.category}`)}"><td><div class="admin-book-cell"><img class="admin-book-cover" src="${book.cover}" alt="${esc(book.title)}"><strong>${esc(book.title)}</strong></div></td><td>${esc(book.author)}</td><td><span class="admin-badge processing">${book.category}</span></td><td><strong>${rupiah(book.price)}</strong></td><td>${book.stock} eksemplar</td><td>${actionButtons()}</td></tr>`).join('')}</tbody></table></div><div class="admin-table-foot"><span>Menampilkan ${BOOKS.length} dari ${BOOKS.length} buku</span><div class="admin-pagination"><button class="admin-page-btn active">1</button><button class="admin-page-btn">2</button><button class="admin-page-btn">3</button><button class="admin-page-btn">›</button></div></div></section>`
+    <section class="admin-card admin-table-card"><div class="admin-table-toolbar">${searchBox('Cari judul atau penulis...')}<select class="admin-select" style="max-width:160px" data-category-filter><option>Semua Kategori</option>${CATEGORIES.map((category) => `<option>${category.name}</option>`).join('')}</select></div><div class="admin-table-wrap"><table class="admin-table" data-filter-table><thead><tr><th>Buku</th><th>Penulis</th><th>Kategori</th><th>Harga</th><th>Stok</th><th>Aksi</th></tr></thead><tbody>${BOOKS.map((book, index) => `<tr data-row-idx="${index}" data-search-row="${esc(`${book.title} ${book.author} ${book.category}`)}"><td><div class="admin-book-cell"><img class="admin-book-cover" src="${book.cover}" alt="${esc(book.title)}"><strong>${esc(book.title)}</strong></div></td><td>${esc(book.author)}</td><td><span class="admin-badge processing">${book.category}</span></td><td><strong>${rupiah(book.price)}</strong></td><td>${book.stock} eksemplar</td><td>${actionButtons()}</td></tr>`).join('')}</tbody></table></div><div class="admin-table-foot"><span data-page-info></span>${paginationHTML('books', BOOKS.length)}</div></section>`
 }
 
 function categoriesView() {
   return `${pageHeading('Manajemen Kategori', 'Atur kategori untuk memudahkan pelanggan menemukan buku', `<button class="admin-btn admin-btn-primary" data-demo="add-category">${icons.plus} Tambah Kategori</button>`)}
-    <section class="admin-card admin-table-card"><div class="admin-table-toolbar">${searchBox('Cari kategori...')}<span style="font-size:11px;color:var(--admin-muted)">${CATEGORIES.length} kategori aktif</span></div><div class="admin-table-wrap"><table class="admin-table" data-filter-table><thead><tr><th>No</th><th>Nama Kategori</th><th>Deskripsi</th><th>Jumlah Buku</th><th>Aksi</th></tr></thead><tbody>${CATEGORIES.map((category, index) => `<tr data-search-row="${esc(category.name)}"><td>${String(index + 1).padStart(2, '0')}</td><td><div class="admin-book-cell"><span class="admin-category-icon">${category.name.slice(0, 2).toUpperCase()}</span><strong>${category.name}</strong></div></td><td class="admin-cell-sub">Koleksi buku ${category.name.toLowerCase()} pilihan BookHub</td><td>${BOOKS.filter((book) => book.category === category.name).length} buku</td><td>${actionButtons()}</td></tr>`).join('')}</tbody></table></div><div class="admin-table-foot"><span>Menampilkan ${CATEGORIES.length} kategori</span><div class="admin-pagination"><button class="admin-page-btn active">1</button><button class="admin-page-btn">2</button><button class="admin-page-btn">›</button></div></div></section>`
+    <section class="admin-card admin-table-card"><div class="admin-table-toolbar">${searchBox('Cari kategori...')}<span style="font-size:11px;color:var(--admin-muted)">${CATEGORIES.length} kategori aktif</span></div><div class="admin-table-wrap"><table class="admin-table" data-filter-table><thead><tr><th>No</th><th>Nama Kategori</th><th>Deskripsi</th><th>Jumlah Buku</th><th>Aksi</th></tr></thead><tbody>${CATEGORIES.map((category, index) => `<tr data-row-idx="${index}" data-search-row="${esc(category.name)}"><td>${String(index + 1).padStart(2, '0')}</td><td><div class="admin-book-cell"><span class="admin-category-icon">${category.name.slice(0, 2).toUpperCase()}</span><strong>${category.name}</strong></div></td><td class="admin-cell-sub">Koleksi buku ${category.name.toLowerCase()} pilihan BookHub</td><td>${BOOKS.filter((book) => book.category === category.name).length} buku</td><td>${actionButtons()}</td></tr>`).join('')}</tbody></table></div><div class="admin-table-foot"><span data-page-info></span>${paginationHTML('categories', CATEGORIES.length)}</div></section>`
 }
 
 function ordersView() {
   return `${pageHeading('Manajemen Pesanan', 'Pantau dan proses seluruh pesanan pelanggan', '<button class="admin-btn admin-btn-secondary" data-demo="export">Ekspor Pesanan</button>')}
-    <section class="admin-card admin-table-card"><div class="admin-table-toolbar">${searchBox('Cari nomor pesanan...')}<select class="admin-select" style="max-width:150px"><option>Semua Status</option><option>Menunggu</option><option>Diproses</option><option>Selesai</option><option>Dibatalkan</option></select></div><div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>No. Pesanan</th><th>Pelanggan</th><th>Tanggal</th><th>Total</th><th>Status</th><th>Aksi</th></tr></thead><tbody>${orders.map((order) => `<tr><td><strong>${order.id}</strong></td><td><div class="admin-customer-cell"><span class="admin-customer-avatar">${order.initials}</span><strong>${order.customer}</strong></div></td><td>${order.date}</td><td><strong>${rupiah(order.total)}</strong></td><td><span class="admin-badge ${order.status}">${statusLabels[order.status]}</span></td><td><button class="admin-btn admin-btn-secondary" style="min-height:30px;padding:6px 10px" data-demo="detail">Detail</button></td></tr>`).join('')}</tbody></table></div><div class="admin-table-foot"><span>Menampilkan 1–5 dari 150 pesanan</span><div class="admin-pagination"><button class="admin-page-btn active">1</button><button class="admin-page-btn">2</button><button class="admin-page-btn">3</button><button class="admin-page-btn">…</button><button class="admin-page-btn">›</button></div></div></section>`
+    <section class="admin-card admin-table-card"><div class="admin-table-toolbar">${searchBox('Cari nomor pesanan...')}<select class="admin-select" style="max-width:150px"><option>Semua Status</option><option>Menunggu</option><option>Diproses</option><option>Selesai</option><option>Dibatalkan</option></select></div><div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>No. Pesanan</th><th>Pelanggan</th><th>Tanggal</th><th>Total</th><th>Status</th><th>Aksi</th></tr></thead><tbody>${orders.map((order, index) => `<tr data-row-idx="${index}"><td><strong>${order.id}</strong></td><td><div class="admin-customer-cell"><span class="admin-customer-avatar">${order.initials}</span><strong>${order.customer}</strong></div></td><td>${order.date}</td><td><strong>${rupiah(order.total)}</strong></td><td><span class="admin-badge ${order.status}">${statusLabels[order.status]}</span></td><td><button class="admin-btn admin-btn-secondary" style="min-height:30px;padding:6px 10px" data-demo="detail">Detail</button></td></tr>`).join('')}</tbody></table></div><div class="admin-table-foot"><span data-page-info></span>${paginationHTML('orders', orders.length)}</div></section>`
 }
 
 function customersView() {
   return `${pageHeading('Manajemen Pelanggan', 'Lihat dan kelola informasi pelanggan BookHub', '<button class="admin-btn admin-btn-secondary" data-demo="export">Ekspor Data</button>')}
-    <section class="admin-card admin-table-card"><div class="admin-table-toolbar">${searchBox('Cari nama atau email...')}<span style="font-size:11px;color:var(--admin-muted)">350 pelanggan terdaftar</span></div><div class="admin-table-wrap"><table class="admin-table" data-filter-table><thead><tr><th>Pelanggan</th><th>Kontak</th><th>Bergabung</th><th>Total Pesanan</th><th>Aksi</th></tr></thead><tbody>${customers.map((customer) => `<tr data-search-row="${esc(`${customer.name} ${customer.email} ${customer.phone}`)}"><td><div class="admin-customer-cell"><span class="admin-customer-avatar">${initials(customer.name)}</span><div><strong>${customer.name}</strong><span class="admin-cell-sub">Pelanggan aktif</span></div></div></td><td><strong>${customer.email}</strong><span class="admin-cell-sub">${customer.phone}</span></td><td>${customer.joined}</td><td><strong>${customer.orders}</strong> pesanan</td><td>${actionButtons()}</td></tr>`).join('')}</tbody></table></div><div class="admin-table-foot"><span>Menampilkan 1–5 dari 350 pelanggan</span><div class="admin-pagination"><button class="admin-page-btn active">1</button><button class="admin-page-btn">2</button><button class="admin-page-btn">3</button><button class="admin-page-btn">…</button><button class="admin-page-btn">›</button></div></div></section>`
+    <section class="admin-card admin-table-card"><div class="admin-table-toolbar">${searchBox('Cari nama atau email...')}<span style="font-size:11px;color:var(--admin-muted)">350 pelanggan terdaftar</span></div><div class="admin-table-wrap"><table class="admin-table" data-filter-table><thead><tr><th>Pelanggan</th><th>Kontak</th><th>Bergabung</th><th>Total Pesanan</th><th>Aksi</th></tr></thead><tbody>${customers.map((customer, index) => `<tr data-row-idx="${index}" data-search-row="${esc(`${customer.name} ${customer.email} ${customer.phone}`)}"><td><div class="admin-customer-cell"><span class="admin-customer-avatar">${initials(customer.name)}</span><div><strong>${customer.name}</strong><span class="admin-cell-sub">Pelanggan aktif</span></div></div></td><td><strong>${customer.email}</strong><span class="admin-cell-sub">${customer.phone}</span></td><td>${customer.joined}</td><td><strong>${customer.orders}</strong> pesanan</td><td>${actionButtons()}</td></tr>`).join('')}</tbody></table></div><div class="admin-table-foot"><span data-page-info></span>${paginationHTML('customers', customers.length)}</div></section>`
 }
 
 function inventoryView() {
   const inventory = BOOKS.slice(0, 9).map((book, index) => ({ ...book, stock: [12, 8, 20, 5, 15, 7, 30, 4, 0][index] }))
   return `${pageHeading('Manajemen Inventaris', 'Pantau tingkat stok dan ketersediaan buku', '<button class="admin-btn admin-btn-teal" data-demo="stock">Perbarui Stok</button>')}
     <div class="admin-stat-grid">${statCard('Total SKU', '1.240', 'Semua judul aktif', 'books', '#2563eb', '#dbeafe')}${statCard('Stok Tersedia', '1.080', '87,1% dari total', 'inventory', '#16a34a', '#dcfce7')}${statCard('Stok Menipis', '24', 'Perlu segera diisi', 'inventory', '#f59e0b', '#fef3c7')}${statCard('Stok Habis', '8', 'Tidak tersedia', 'inventory', '#dc2626', '#fee2e2')}</div>
-    <section class="admin-card admin-table-card"><div class="admin-table-toolbar">${searchBox('Cari judul buku...')}<select class="admin-select" style="max-width:160px"><option>Semua Status</option><option>Tersedia</option><option>Stok Menipis</option><option>Stok Habis</option></select></div><div class="admin-table-wrap"><table class="admin-table" data-filter-table><thead><tr><th>Buku</th><th>Kategori</th><th>Stok Saat Ini</th><th>Status</th><th>Aksi</th></tr></thead><tbody>${inventory.map((book) => { const stockStatus = book.stock === 0 ? 'out' : book.stock <= 5 ? 'low' : 'available'; const label = stockStatus === 'out' ? 'Stok Habis' : stockStatus === 'low' ? 'Stok Menipis' : 'Tersedia'; const percent = Math.min(book.stock / 30 * 100, 100); return `<tr data-search-row="${esc(`${book.title} ${book.category}`)}"><td><div class="admin-book-cell"><img class="admin-book-cover" src="${book.cover}" alt="${esc(book.title)}"><strong>${esc(book.title)}</strong></div></td><td>${book.category}</td><td><div class="admin-stock-cell"><div class="admin-stock-line"><strong>${book.stock}</strong><span style="color:var(--admin-muted);font-size:10px">/ 30</span></div><div class="admin-stock-meter"><span class="${stockStatus}" style="width:${percent}%"></span></div></div></td><td><span class="admin-badge ${stockStatus}">${label}</span></td><td><button class="admin-btn admin-btn-secondary" style="min-height:30px;padding:6px 10px" data-demo="stock">Atur Stok</button></td></tr>` }).join('')}</tbody></table></div><div class="admin-table-foot"><span>Menampilkan 9 dari 1.240 SKU</span><div class="admin-pagination"><button class="admin-page-btn active">1</button><button class="admin-page-btn">2</button><button class="admin-page-btn">3</button><button class="admin-page-btn">›</button></div></div></section>`
+    <section class="admin-card admin-table-card"><div class="admin-table-toolbar">${searchBox('Cari judul buku...')}<select class="admin-select" style="max-width:160px"><option>Semua Status</option><option>Tersedia</option><option>Stok Menipis</option><option>Stok Habis</option></select></div><div class="admin-table-wrap"><table class="admin-table" data-filter-table><thead><tr><th>Buku</th><th>Kategori</th><th>Stok Saat Ini</th><th>Status</th><th>Aksi</th></tr></thead><tbody>${inventory.map((book, index) => { const stockStatus = book.stock === 0 ? 'out' : book.stock <= 5 ? 'low' : 'available'; const label = stockStatus === 'out' ? 'Stok Habis' : stockStatus === 'low' ? 'Stok Menipis' : 'Tersedia'; const percent = Math.min(book.stock / 30 * 100, 100); return `<tr data-row-idx="${index}" data-search-row="${esc(`${book.title} ${book.category}`)}"><td><div class="admin-book-cell"><img class="admin-book-cover" src="${book.cover}" alt="${esc(book.title)}"><strong>${esc(book.title)}</strong></div></td><td>${book.category}</td><td><div class="admin-stock-cell"><div class="admin-stock-line"><strong>${book.stock}</strong><span style="color:var(--admin-muted);font-size:10px">/ 30</span></div><div class="admin-stock-meter"><span class="${stockStatus}" style="width:${percent}%"></span></div></div></td><td><span class="admin-badge ${stockStatus}">${label}</span></td><td><button class="admin-btn admin-btn-secondary" style="min-height:30px;padding:6px 10px" data-demo="stock">Atur Stok</button></td></tr>` }).join('')}</tbody></table></div><div class="admin-table-foot"><span data-page-info></span>${paginationHTML('inventory', inventory.length)}</div></section>`
 }
 
 function reportsView() {
@@ -172,21 +220,50 @@ function showToast(message) {
   setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 200) }, 2800)
 }
 
-function bindView() {
+function bindView(route) {
   const content = document.getElementById('admin-content')
+  const activeRoute = route || 'dashboard'
+  const totalRows = content.querySelectorAll('tbody tr[data-row-idx]').length
+
   content.querySelectorAll('[data-table-search]').forEach((input) => {
     input.addEventListener('input', () => {
       const query = input.value.toLowerCase().trim()
-      content.querySelectorAll('[data-search-row]').forEach((row) => { row.style.display = row.dataset.searchRow.toLowerCase().includes(query) ? '' : 'none' })
+      content.querySelectorAll('tbody tr[data-row-idx]').forEach((row) => {
+        const rowText = row.dataset.searchRow || ''
+        row.dataset.searchMatch = rowText.toLowerCase().includes(query) ? 'true' : 'false'
+      })
+      applyPagination(content, activeRoute, totalRows)
     })
   })
+
   content.querySelectorAll('[data-demo]').forEach((button) => {
     button.addEventListener('click', () => {
       const messages = { 'add-book': 'Form tambah buku siap digunakan pada tahap berikutnya.', 'add-category': 'Form tambah kategori siap digunakan pada tahap berikutnya.', export: 'Data berhasil disiapkan untuk diekspor.', generate: 'Laporan berhasil dibuat untuk periode yang dipilih.', stock: 'Panel pembaruan stok siap digunakan pada tahap berikutnya.', edit: 'Mode edit siap digunakan pada tahap berikutnya.', delete: 'Aksi hapus dinonaktifkan pada demo UI.', detail: 'Detail pesanan siap digunakan pada tahap berikutnya.' }
       showToast(messages[button.dataset.demo] || 'Aksi berhasil dijalankan.')
     })
   })
-  content.querySelectorAll('.admin-page-btn').forEach((button) => button.addEventListener('click', () => showToast('Navigasi halaman demo.')))
+
+  content.querySelectorAll('.admin-page-btn[data-page]').forEach((button) => {
+    button.addEventListener('click', () => {
+      pageState[activeRoute] = parseInt(button.dataset.page, 10)
+      applyPagination(content, activeRoute, totalRows)
+    })
+  })
+
+  content.querySelectorAll('.admin-page-btn[data-page-action]').forEach((button) => {
+    button.addEventListener('click', () => {
+      if (button.disabled) return
+      const totalPages = Math.max(1, Math.ceil(totalRows / PAGE_SIZE))
+      let currentPage = pageState[activeRoute] || 1
+      currentPage = button.dataset.pageAction === 'prev' ? Math.max(1, currentPage - 1) : Math.min(totalPages, currentPage + 1)
+      pageState[activeRoute] = currentPage
+      applyPagination(content, activeRoute, totalRows)
+    })
+  })
+
+  if (totalRows > 0) {
+    applyPagination(content, activeRoute, totalRows)
+  }
 }
 
 function navigate(route) {
@@ -194,7 +271,7 @@ function navigate(route) {
   document.getElementById('admin-content').innerHTML = views[activeRoute]()
   document.getElementById('admin-top-title').textContent = pageTitles[activeRoute]
   document.querySelectorAll('.admin-nav-link').forEach((link) => link.classList.toggle('active', link.dataset.route === activeRoute))
-  bindView()
+  bindView(activeRoute)
   document.getElementById('admin-sidebar').classList.remove('open')
   document.getElementById('admin-overlay').classList.remove('open')
 }
